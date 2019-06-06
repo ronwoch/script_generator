@@ -16,7 +16,7 @@ shbang=''
 # Check that all 3 elements are given
 if [ $# -lt 3 ]
 then 
-    echo "Usage: $0 \"file name \" \"description\" \"language\""
+    echo 'Usage: $0 \"file name \" \"description\" \"language\"'
     exit
 fi
 
@@ -24,6 +24,14 @@ case "$3" in
     [Bb]'ash') echo "creating a $language script... "
         language='bash'
         shbang='/bin/bash'
+		useage='usage() {
+	echo -e "\n usage: $0 filename \n"
+}
+if [ $# -lt 1 ]; then
+	usage
+	exit 1
+fi
+'	
         ;;
     
     [Pp]'owershell') echo "creating a $language script... " 
@@ -67,12 +75,13 @@ else
  echo "#!$shbang" >> $file_name
  echo "#=========================================================================================" >> $file_name
  echo "# $file_name" >> $file_name
- echo "# Ronald Wochner " >> $file_name
+ echo "# $USER " >> $file_name
  echo "# $today" >> $file_name
  echo "# Version 1" >> $file_name
- echo "# Simple $language script to $description" >> $file_name
+ echo "# $language script to $description" >> $file_name
  echo "#=========================================================================================" >> $file_name
  echo "" >> $file_name
+ echo "$useage" >> $file_name
  echo "" >> $file_name
  echo "" >> $file_name
  echo "Added date: $today and description: $description"
