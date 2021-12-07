@@ -13,7 +13,7 @@
 # Set scriptspath to the directory you want to store your new scripts in
 
 installpath=$HOME/git-repos/github/scripting
-scriptspath=$HOME/git-repos/github/scripts
+scriptspath=$HOME/git-repos/github/
 
 #===========================================================
 
