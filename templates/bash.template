@@ -1,0 +1,3 @@
+language='bash'
+shbang='/bin/bash'
+extension='.sh'

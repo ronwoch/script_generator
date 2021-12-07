@@ -1,0 +1,3 @@
+language='ruby'
+shbang='/usr/bin/ruby'
+extension='.rb'

@@ -3,16 +3,17 @@
 #===========================================================
 # Ronald Wochner
 # Originally based on a project for class. See www.github.com/ronwoch
-# 11/24/2020
-# Version 2.1
+# 12/06/2021
+# Version 3.0
 # Simple bash script to create the boiler plate for scripts of different languages
 #===========================================================
 
 #===========================================================
 # Configuration variables. Adjust as needed.
-# Set this to the directory you want to store your new scripts in
+# Set scriptspath to the directory you want to store your new scripts in
 
-scriptspath=$HOME/github/scripting
+installpath=$HOME/git-repos/github/scripting
+scriptspath=$HOME/git-repos/github/scripts
 
 #===========================================================
 
@@ -24,6 +25,7 @@ shbang=''
 author=$4
 insert_hello=$5
 scriptdir=$scriptspath/$file_name
+templates=$installpath/templates
 
 # Check that all elements are given
 if [ $# -lt 4 ]
@@ -47,53 +49,51 @@ fi
 
 case "$3" in 
     [Bb]'ash') echo "creating a $language script... "
-        language='bash'
-        shbang='/bin/bash'
-        extension='.sh'
-        ;;
-    
-    [Pp]'owershell') echo "creating a $language script... " 
-        language='powershell'
-        shbang='/usr/bin/powershell'
-        extension='.ps1'
+        source $templates/bash.template
+
+    [Pp]'owershell' echo "creating a $language script... " 
+        source $templates/powershell.template
         ;;
 
     [Pp]'ython') echo "creating a $language script... " 
-        language='python'
-        shbang='/usr/bin/python'
-        extension='.py'
+        source $templates/python.template
         ;;
 
     [Pp]'erl') echo "creating a $language script... " 
-        language='perl'
-        shbang='/usr/bin/perl'
-        extension='.pl'
+        source $templates/perl.template
         ;;
 
     [Rr]'uby') echo "creating a $language script... " 
-        language='ruby'
-        shbang='/usr/bin/ruby'
-        extension='.rb'
+        source $templates/perl.template
         ;;
 
     [Pp]'hp') echo "creating a $language script... " 
-        language='php'
-        shbang='/usr/bin/php'
-        extension='.php'
+        source $templates/php.template
         ;;
     
     *) echo "$language not recognized, defaulting to bash..."
-        language='bash'
-        shbang='/bin/bash'
-        extension='.sh'
+        source $templates/bash.template
         ;;
+
 esac
 
+
+# Check if scriptpath exists, if so move into it
+if [ -e "$scriptspath" ]
+then
+        echo "Info: "$scriptspath" exists! CD'ing instead..."
+        cd $scriptspath
+else
+        echo "Creating $scriptspath" 
+        mkdir $scriptspath
+        echo "Changing into $scriptspath"
+        cd $scriptspthath
+fi
 
 # Check if a directory for the script exists, if so move into it
 if [ -e "$scriptdir" ]
 then
-        echo "Error: "$scriptdir" exists! CD'ing instead..."
+        echo "Info: "$scriptdir" exists! CD'ing instead..."
         cd $scriptdir
 else
         echo "Creating $scriptdir" 
@@ -151,7 +151,7 @@ fi
 # Pause and allow a chance to read the output
 echo "Opening script in $EDITOR..."
 read -rsp $'Press any key to continue...\n' -n1 key
-$EDITOR $file_name
+$EDITOR $scriptdir/$file_name
 
 
 
