@@ -5,14 +5,14 @@
 # Originally based on a project for class. See www.github.com/ronwoch
 # 12/06/2021
 # Version 3.0
-# Simple bash script to create the boiler plate for scripts of different languages
+# Simple bash script to create the boiler plate for scripts/programs of different languages
 #===========================================================
 
 #===========================================================
 # Configuration variables. Adjust as needed.
 # Set scriptspath to the directory you want to store your new scripts in
 
-installpath=$HOME/git-repos/github/scripting
+installpath=$HOME/git-repos/github/script_generator
 scriptspath=$HOME/git-repos/github/
 
 #===========================================================
@@ -24,7 +24,7 @@ language=$3
 shbang=''
 author=$4
 insert_hello=$5
-scriptdir=$scriptspath/$file_name
+scriptdir=$scriptspath$file_name
 templates=$installpath/templates
 
 # Check that all elements are given
@@ -39,12 +39,6 @@ if [ "$author" == "" ]
 then
     echo "No author supplied, using result of whoami..."
     author=`whoami`
-fi
-
-# Check if we should insert a "Hello, World!"
-if [ "$insert_hello" == "" ]
-then
-    echo "No 'hello world! string specified, script body will be empty."
 fi
 
 case "$3" in 
@@ -70,7 +64,15 @@ case "$3" in
     [Pp]'hp') echo "creating a $language script... " 
         source $templates/php.template
         ;;
+
+    [Cc]) echo "creating a $language script... " 
+        source $templates/c.template
+        ;;
     
+    [Cc]['++''pp']) echo "creating a $language script... " 
+        source $templates/cpp.template
+        ;;
+
     *) echo "$language not recognized, defaulting to bash..."
         source $templates/bash.template
         ;;
@@ -126,17 +128,22 @@ if [ "$language" == "php" ]
 then
         echo "<?php " >> $file_name
 fi
-echo "#!$shbang" >> $file_name
+echo $shbang >> $file_name
 echo "#=========================================================================================" >> $file_name
 echo "# $file_name" >> $file_name
 echo "# $author " >> $file_name
 echo "# $today" >> $file_name
-echo "# Version 1" >> $file_name
-echo "# $language script. Description:  $description" >> $file_name
-echo "# This script was generated using gen_script.sh, written by Ron Wochner" >> $file_name
+echo "# Version: " >> $file_name
+echo "# $language file. Description:  $description" >> $file_name
+echo "# This file was generated using genscript2.sh, written by Ron Wochner" >> $file_name
 echo "#=========================================================================================" >> $file_name
 echo "" >> $file_name
 echo "" >> $file_name
+echo "" >> $file_name
+echo $includes >> $file_name
+echo "" >> $file_name
+echo "" >> $file_name
+echo $body >> $file_name
 echo "" >> $file_name
 echo "$insert_hello" >> $file_name
 if [ "$language" == "php" ]
@@ -149,9 +156,7 @@ chmod a+x "$file_name"
 fi
 
 # Pause and allow a chance to read the output
-echo "Opening script in $EDITOR..."
 read -rsp $'Press any key to continue...\n' -n1 key
-$EDITOR $scriptdir/$file_name
 
 
 

@@ -1,3 +1,3 @@
 language='powershell'
-shbang='/usr/bin/powershell'
+shbang='#!/usr/bin/powershell'
 extension='.ps1'

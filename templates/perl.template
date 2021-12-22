@@ -1,3 +1,3 @@
 language='perl'
-shbang='/usr/bin/perl'
+shbang='#!/usr/bin/perl'
 extension='.pl'

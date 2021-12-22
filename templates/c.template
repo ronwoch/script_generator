@@ -1,0 +1,7 @@
+language='c'
+shbang=''
+extension='.c'
+includes='#include <stdio.h>'
+body='int main(int argc, char *argv[]) {
+
+}'
