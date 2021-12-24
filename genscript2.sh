@@ -42,34 +42,34 @@ then
 fi
 
 case "$3" in 
-    [Bb]'ash') echo "creating a $language script... "
+    [Bb]'ash') echo "creating a $language file... "
         source $templates/bash.template
 
-    [Pp]'owershell' echo "creating a $language script... " 
+    [Pp]'owershell' echo "creating a $language file... " 
         source $templates/powershell.template
         ;;
 
-    [Pp]'ython') echo "creating a $language script... " 
+    [Pp]'ython') echo "creating a $language file... " 
         source $templates/python.template
         ;;
 
-    [Pp]'erl') echo "creating a $language script... " 
+    [Pp]'erl') echo "creating a $language file... " 
         source $templates/perl.template
         ;;
 
-    [Rr]'uby') echo "creating a $language script... " 
+    [Rr]'uby') echo "creating a $language file... " 
         source $templates/perl.template
         ;;
 
-    [Pp]'hp') echo "creating a $language script... " 
+    [Pp]'hp') echo "creating a $language file... " 
         source $templates/php.template
         ;;
 
-    [Cc]) echo "creating a $language script... " 
+    [Cc]) echo "creating a $language file... " 
         source $templates/c.template
         ;;
     
-    [Cc]['++''pp']) echo "creating a $language script... " 
+    [Cc]'pp') echo "creating a $language file... " 
         source $templates/cpp.template
         ;;
 
@@ -104,18 +104,28 @@ else
         cd $scriptdir
 fi
 
-# Create a bash alias 
-if [ -f $HOME/.bash_aliases ]
+# Check $makeflag is set, and copy makefile if yes
+if [ "$makeflag" == "yes" ]
 then
-        echo "Creating a bash alias for your new script."
-        echo "alias $file_name='bash $scriptdir/$file_name$extension'" >> $HOME/.bash_aliases
-# Append a file extension to our file name. Not needed on UNIX systems, however, very useful on Windows boxes and makes our generated scripts more portable (and readable)
-        file_name="$file_name$extension"
+        if [ -e $scriptdir/Makefile ]
+        then 
+                echo "Makefile exists. Template will not be copied."
+        else
+                echo "Copying Makefile template."
+                cp $templates/Makefile.template $scriptdir/Makefile
+        fi
+# Create a bash alias 
 else
-        echo "Creating a bash alias for your new script."
-        echo "alias $file_name='bash $scriptdir/$file_name$extension'" >> $HOME/.bash_aliases
-        file_name="$file_name$extension"
+        if [ -f $HOME/.bash_aliases ]
+        then
+                echo "Creating a bash alias for your new script. Don't forget to source your aliases file to load the new alias."
+                echo "alias $file_name='bash $scriptdir/$file_name$extension'" >> $HOME/.bash_aliases
+        fi
+
 fi
+
+# Append a file extension to our file name. Not needed on UNIX systems, however, very useful on Windows boxes and makes our generated scripts more portable (and readable)
+file_name="$file_name$extension"
 
 # Check if file with the provided file name exists, if it does we error out and exit so as not to clobber anything important. 
 if [ -e "$file_name" ]
@@ -129,12 +139,14 @@ then
         echo "<?php " >> $file_name
 fi
 echo $shbang >> $file_name
+echo "" >> $file_name
 echo "#=========================================================================================" >> $file_name
 echo "# $file_name" >> $file_name
 echo "# $author " >> $file_name
 echo "# $today" >> $file_name
 echo "# Version: " >> $file_name
-echo "# $language file. Description:  $description" >> $file_name
+echo "# Description:  $description" >> $file_name
+echo "# $language file.">> $file_name
 echo "# This file was generated using genscript2.sh, written by Ron Wochner" >> $file_name
 echo "#=========================================================================================" >> $file_name
 echo "" >> $file_name
