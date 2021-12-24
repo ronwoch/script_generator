@@ -1,5 +1,4 @@
 language='c'
 shbang='#include <stdio.h>'
 extension='.c'
-makeflag='yes'
 body='int main(int argc, char *argv[]) {\n\n}'
